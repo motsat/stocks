@@ -19,3 +19,5 @@ group :production do
   gem 'pg'
   gem 'thin'
 end
+
+gem "twitter-bootstrap-rails"
