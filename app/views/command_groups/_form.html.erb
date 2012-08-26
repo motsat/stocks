@@ -1,0 +1,18 @@
+<%= form_for(@command_group) do |f| %>
+  <%= f.text_field :title %>
+  <pre>
+  <%= text_area_tag 'command[contents]', commands_for_textarea(@command_group.commands),
+      cols:100, rows:4 , class:"field span6", placeholder:"input commands" %>
+  </pre>
+  <%= submit_tag '登録', :class => '' %>
+<% end %>
+
+<% if false %>
+<%= form_tag command_groups_create_url do %>
+  <%= text_field :command_group, :title %><br/>
+  <pre>
+  <%= text_area  :command, :contents, cols:100, rows:4 , class:"field span6", placeholder:"input commands" %>
+  </pre>
+  <%= submit_tag '登録', :class => '' %>
+  <% end %>
+<% end %>

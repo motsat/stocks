@@ -1,0 +1,27 @@
+class CommandGroupsController < ApplicationController
+  before_filter :find_command_group, :except => :index
+
+  def index
+    @command_groups = CommandGroup.all
+  end
+
+  def new
+  end
+
+  def create
+  end
+
+  def show
+  end
+
+  def edit
+  end
+
+  def delete
+  end
+
+  private
+  def find_command_group
+    @command_group = CommandGroup.find params[:id]
+  end
+end

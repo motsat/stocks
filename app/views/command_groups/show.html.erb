@@ -1,0 +1,27 @@
+<!--
+ アイコン、ボタン、フォーム 
+ http://blog.asial.co.jp/887
+ お勉強
+ http://dotinstall.com/lessons/basic_twitter_bootstrap_v2 
+ -->
+<script>
+  function on_click_command(command_id) {
+    element = $("#command_" + command_id);
+    window.prompt("Copy to clipboard: Ctrl+C, Enter", element.html());
+  }
+</script>
+<h3><%= @command_group.title %></h3>
+<br/>
+<div class=''>
+  <span style='color:blue'>SITE: hoge.com</span><br/>
+  <span style='color:green'>IpAd: 192.168.100.12</span><br/>
+</div>
+<br/>
+<div style='text-align:right'>
+ <a><i class='icon-edit icon-white'></i>all copy</a>
+</div>
+<pre style="font-size:15px; font-family: 'Andale Mono', monospace">
+<% @command_group.commands.each do |command| -%>
+<%= content_tag(:span,  command.content, :id => "command_#{command.id}", :onClick => "on_click_command(#{command.id})") -%> <%= copy_icon %>
+<% end %>
+</pre>
