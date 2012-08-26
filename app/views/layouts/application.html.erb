@@ -47,9 +47,9 @@
           <a class="brand" href="#">Stocks</a>
           <div class="container nav-collapse">
             <ul class="nav">
-              <li><%= link_to "Link1", "/path1"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
+              <li><%= link_to "一覧", command_groups_url  %></li>
+              <li><%= link_to "追加", new_command_group_url  %></li>
+              <li><%= link_to "アカウント", "/path3"  %></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -86,6 +86,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag "application" %>
+    <%= favicon_link_tag 'favicon.ico' %>
 
   </body>
 </html>
