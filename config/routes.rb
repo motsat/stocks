@@ -1,4 +1,6 @@
 Stocks::Application.routes.draw do
+  devise_for :users
+
   #get "command_groups/new"
 
   #post "command_groups/create"
