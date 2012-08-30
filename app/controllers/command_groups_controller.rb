@@ -14,10 +14,11 @@ class CommandGroupsController < ApplicationController
   def create
     CommandGroup.transaction do
       Command.transaction do
-        command_group = CommandGroup.create params[:command_group]
+        command_group = CommandGroup.create params[:command_group].merge(user_id: @current_user.id)
         command_group.commands = (Command.import_by_plane_text params[:command][:contents])
       end
     end
+    redirect_to root_url and return
   end
 
   def destroy
@@ -33,13 +34,13 @@ class CommandGroupsController < ApplicationController
       Command.transaction do
         @command_group.update_attributes(params[:command_group])
         @command_group.commands = (Command.import_by_plane_text params[:command][:contents])
-        redirect_to root_url
       end
     end
+    redirect_to root_url and return
   end
 
   private
   def find_command_group
-    @command_group = @current_user.command_group.find(params[:id])
+    @command_group = @current_user.command_groups.find(params[:id])
   end
 end

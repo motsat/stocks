@@ -6,5 +6,10 @@ class CommandGroup < ActiveRecord::Base
   def set_command_summary
     self.command_summary = self.commands.pluck(:content).join('  ')
   end
+  def commands=(a)
+    super(a)
+    set_command_summary
+    self.save!
+  end
 
 end
