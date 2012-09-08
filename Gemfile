@@ -13,6 +13,7 @@ group :test, :development do
   gem 'mysql2'
   gem 'sqlite3'
   gem 'heroku'
+  gem 'autotest'
 end
 
 group :production do

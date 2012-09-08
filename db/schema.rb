@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829145422) do
+ActiveRecord::Schema.define(:version => 20120831062307) do
 
   create_table "command_groups", :force => true do |t|
     t.string   "title"
@@ -24,8 +24,11 @@ ActiveRecord::Schema.define(:version => 20120829145422) do
   create_table "command_replaces", :force => true do |t|
     t.string   "title"
     t.string   "content"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "from_content"
+    t.string   "to_content"
+    t.integer  "command_group_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "commands", :force => true do |t|

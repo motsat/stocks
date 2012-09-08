@@ -9,21 +9,73 @@
     element = $("#command_" + command_id);
     window.prompt("Copy to clipboard: Ctrl+C, Enter", element.html());
   }
+  function replace_contents()
+  {
+    original_commands = $("*[name=original_commands]");
+    from_contents     = $("*[name=from_content]");
+    to_contents       = $("*[name=to_content]");
+
+    // # 全ての文字変換を反映
+    // # hidden_command_-オリジナルのcommand
+    // # from_contentからto_contentへの変換を全体にかける
+    $.each(original_commands, function(org_idx, org_elem) {
+        content = $(org_elem).html()
+        $.each(from_contents, function(from_idx, from_elem) {
+          from_content = $(from_elem).html()
+          to_content   = $(to_contents[from_idx]).val()
+          content      = content.replace(from_content, to_content);
+        });
+
+        command = $("*[name=commands]")[org_idx];
+        $(command).text(content);
+    })
+  }
 </script>
 <h3><%= @command_group.title %></h3>
 <%= link_to("edit",edit_command_group_url(@command_group)) %>
-
 <br/>
-<div class=''>
-  <span style='color:blue'>SITE: hoge.com</span><br/>
-  <span style='color:green'>IpAd: 192.168.100.12</span><br/>
-</div>
+
+<% @command_group.command_replaces.each do |command_replace| %>
+  <span style='color:blue'><span name='from_content'><%= command_replace.from_content %></span>:<%= text_field_tag "", command_replace.to_content, 
+                                                                  :name=>'to_content',:id=>"command_replace_#{command_replace.id}", :onChange => "replace_contents();" %><br/></span>
+<% end %>
+
 <br/>
 <div style='text-align:right'>
  <a><i class='icon-edit icon-white'></i>all copy</a>
 </div>
 <pre style="font-size:15px; font-family: 'Andale Mono', monospace">
 <% @command_group.commands.each do |command| -%>
-<%= content_tag(:span,  command.content, :id => "command_#{command.id}", :onClick => "on_click_command(#{command.id})") -%> <%= copy_icon %>
+  <%= content_tag(:span,  command.content, :name=>:commands, :class => :command_class, :id => "command_#{command.id}") -%> <%= copy_icon %>
 <% end %>
 </pre>
+<div style='display:none'>
+  <% @command_group.commands.each do |command| -%>
+  <%= content_tag(:div, command.content, :name => :original_commands, :id => "original_command_#{command.id}") -%><br/>
+  <% end %>
+</div>
+<% content_for :after_application_js_load do -%>
+
+<a id='hoge'>aaaa</a>
+<p id='description'>desc aaaa</p>
+
+<%= javascript_include_tag "jquery.zclip" %>
+<script>
+  $(document).ready(function(){
+    $(".command_class").each(function(){
+      $(this).zclip({
+        path:'/swf/ZeroClipboard.swf',
+        copy:$(this).text(),
+        beforeCopy:function(){
+          $(this).css('background','white');
+          $(this).css('color','lightgray');
+        },
+        afterCopy:function(){
+          $(this).css('background','lightgrey');
+          $(this).css('color','darkgray');
+        }
+      });
+    });
+ });
+</script>
+<% end -%>
