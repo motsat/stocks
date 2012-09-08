@@ -4,11 +4,33 @@
  お勉強
  http://dotinstall.com/lessons/basic_twitter_bootstrap_v2 
  -->
+<h3><%= @command_group.title %></h3>
+<%= link_to("edit",edit_command_group_url(@command_group)) %>
+<br/>
+
+<% @command_group.command_replaces.each do |command_replace| %>
+  <span style='color:blue'><span name='from_content'><%= command_replace.from_content %></span>:<%= text_field_tag "", command_replace.to_content, 
+                                                                  :name=>'to_content',:id=>"command_replace_#{command_replace.id}", :onChange => "replace_contents();" %><br/></span>
+<% end %>
+
+<br/>
+<div style='text-align:right'>
+ <a><i class='icon-edit icon-white'></i>all copy</a>
+</div>
+<pre style="font-size:15px; font-family: 'Andale Mono', monospace">
+<% @command_group.commands.each do |command| -%>
+  <%= content_tag(:span,  command.content, :name => :commands, :class => :command_class, :id => "command_#{command.id}") -%> <%= copy_icon %>
+<% end %>
+</pre>
+<div style='display:none'>
+  <% @command_group.commands.each do |command| -%>
+  <%= content_tag(:div, command.content, :name => :original_commands, :id => "original_command_#{command.id}") -%><br/>
+  <% end %>
+</div>
+<% content_for :after_application_js_load do -%>
+
+<%= javascript_include_tag "jquery.zclip" %>
 <script>
-  function on_click_command(command_id) {
-    element = $("#command_" + command_id);
-    window.prompt("Copy to clipboard: Ctrl+C, Enter", element.html());
-  }
   function replace_contents()
   {
     original_commands = $("*[name=original_commands]");
@@ -28,53 +50,28 @@
 
         command = $("*[name=commands]")[org_idx];
         $(command).text(content);
+        set_zclip(command);
     })
   }
-</script>
-<h3><%= @command_group.title %></h3>
-<%= link_to("edit",edit_command_group_url(@command_group)) %>
-<br/>
-
-<% @command_group.command_replaces.each do |command_replace| %>
-  <span style='color:blue'><span name='from_content'><%= command_replace.from_content %></span>:<%= text_field_tag "", command_replace.to_content, 
-                                                                  :name=>'to_content',:id=>"command_replace_#{command_replace.id}", :onChange => "replace_contents();" %><br/></span>
-<% end %>
-
-<br/>
-<div style='text-align:right'>
- <a><i class='icon-edit icon-white'></i>all copy</a>
-</div>
-<pre style="font-size:15px; font-family: 'Andale Mono', monospace">
-<% @command_group.commands.each do |command| -%>
-  <%= content_tag(:span,  command.content, :name=>:commands, :class => :command_class, :id => "command_#{command.id}") -%> <%= copy_icon %>
-<% end %>
-</pre>
-<div style='display:none'>
-  <% @command_group.commands.each do |command| -%>
-  <%= content_tag(:div, command.content, :name => :original_commands, :id => "original_command_#{command.id}") -%><br/>
-  <% end %>
-</div>
-<% content_for :after_application_js_load do -%>
-
-<a id='hoge'>aaaa</a>
-<p id='description'>desc aaaa</p>
-
-<%= javascript_include_tag "jquery.zclip" %>
-<script>
-  $(document).ready(function(){
-    $(".command_class").each(function(){
-      $(this).zclip({
+  function set_zclip(element)
+  {
+      $(element).zclip({
         path:'/swf/ZeroClipboard.swf',
-        copy:$(this).text(),
+        copy:$(element).text(),
         beforeCopy:function(){
-          $(this).css('background','white');
-          $(this).css('color','lightgray');
+          $(element).css('background','white');
+          $(element).css('color','lightgray');
         },
         afterCopy:function(){
-          $(this).css('background','lightgrey');
-          $(this).css('color','darkgray');
+          $(element).css('background','lightgrey');
+          $(element).css('color','darkgray');
         }
       });
+  }
+  $(document).ready(function(){
+    replace_contents()
+    $(".command_class").each(function(){
+      set_zclip(this);
     });
  });
 </script>

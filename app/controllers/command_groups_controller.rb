@@ -6,6 +6,7 @@ class CommandGroupsController < ApplicationController
 
   def new
     @command_group = CommandGroup.new
+    @command_group.command_replaces = [CommandReplace.new()]
   end
 
   def show

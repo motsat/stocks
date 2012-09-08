@@ -10,10 +10,5 @@
   <%= text_area_tag 'command[contents]', commands_for_textarea(@command_group.commands),
       cols:100, rows:4 , class:"field span6", placeholder:"input commands" %>
   </pre>
-  <h3>Replaces</h3>
-  <%= f.fields_for :command_replaces do |replace_f|  %>
-    From:<%= replace_f.text_field :from_content %>
-    To:<%= replace_f.text_field :to_content %>
-  <% end %>
   <%= submit_tag '登録', :class => '' %>
 <% end %>
