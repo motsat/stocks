@@ -10,7 +10,7 @@
 
 <% @command_group.command_replaces.each do |command_replace| %>
   <span style='color:blue'><span name='from_content'><%= command_replace.from_content %></span>:<%= text_field_tag "", command_replace.to_content, 
-                                                                  :name=>'to_content',:id=>"command_replace_#{command_replace.id}", :onChange => "replace_contents();" %><br/></span>
+                                                                  :name=>'to_content',:id=>"command_replace_#{command_replace.id}", :onChange => "replace_contents();", :onKeyUP => "replace_contents();" %><br/></span>
 <% end %>
 
 <br/>
