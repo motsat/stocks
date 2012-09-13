@@ -1,4 +1,8 @@
 <script>
+  function delete_command_replac(id)
+  {
+    console.log($("#command_replace_" + id).remove())
+  }
   // document.body.onload = function(){$("#command_group_title").focus()}
   //  $(document).ready(function(){
   //        // ここに実際の処理を記述します。
@@ -11,9 +15,13 @@
       cols:100, rows:4 , class:"field span6", placeholder:"input commands" %>
   </pre>
   <h3>Replaces</h3>
-  <%= f.fields_for :command_replaces do |replace_f|  %>
-    From:<%= replace_f.text_field :from_content %>
-    To:<%= replace_f.text_field :to_content %>
+
+  <% command_replace_idx = 0 %>
+  <div class='field' id="command_replaces">
+  <%= f.fields_for :command_replaces do |replace_f,idx|  %>
+    <%= render 'command_replace_fields', :f => replace_f %>
   <% end %>
+  <%= link_to_add_fields 'Add Replace Content', f, :command_replaces %><br/>
+  </div>
   <%= submit_tag '登録', :class => '' %>
 <% end %>

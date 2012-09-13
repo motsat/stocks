@@ -5,7 +5,6 @@ Stocks::Application.routes.draw do
 
   #post "command_groups/create"
 
-  #get "command_groups/delete"
 
   #get "command_groups/show"
 
@@ -16,7 +15,11 @@ Stocks::Application.routes.draw do
   #match 'products/:id' => 'catalog#view'
 
   #get "commands" => "commands#index"
-  resources :command_groups
+  resources :command_groups do
+    member do
+      get :delete
+    end
+  end
   root :to => "command_groups#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.

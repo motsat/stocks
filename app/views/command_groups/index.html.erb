@@ -1,12 +1,13 @@
 <% @command_groups.each do |command_group| %>
-    <h3 style=""><%= link_to command_group.title, command_group %></h3>
-    create : <%= command_group.created_at.to_s(:simple) %>
-    <% if false %>
-      <%= link_to 'Edit', edit_command_group_path(command_group), class:"btn" %>
-      <%= form_for command_group , action: :delete, method: :delete, html:{style:"display: inline"} do %>
-        <%= submit_tag :delete, class: "btn" %>
-      <% end %>
-    <% end %>
+  <div class="box">
+    <div class="left"><%= link_to command_group.title, command_group %></div>
+    <div class="right">
+      <%= icon_link_to :edit,  edit_command_group_url(command_group) %>
+      <%= icon_link_to :trash, delete_command_group_url(command_group) %>
+      <%= icon(:time) {command_group.created_at.to_s(:simple)}%>
+    </div>
+  </div>
+  <br/>
   <pre>
   <%= command_group.command_summary -%>
   </pre>
