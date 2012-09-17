@@ -1,0 +1,15 @@
+Autotest.add_hook(:initialize) {|at|
+  at.add_exception %r{^\.git}  # バージョン管理システムのファイルを無視
+  #at.add_exception %r{^./tmp}  # テンポラリファイルを無視。でないと、延々とテストが繰り返される。
+  ##  at.clear_mappings         # autotestデフォルトの検査対象ディレクトリをクリアする。 (test/test*rb)
+  #at.add_mapping(%r{^app/models/.*\.rb$}) {|f, _|
+  #  Dir['spec/**/*.rb']
+  #}
+  #at.add_mapping(%r%^app/models/.*\.rb$%) {
+  #  at.files_matching(%r%^spec/models/.*_spec.rb$%)
+  #}
+  #nil
+  at.add_mapping(/app\/([\/\w_]+)\.rb$/) do |f, matched|
+    "spec/#{matched[1]}_spec.rb"
+  end
+}
