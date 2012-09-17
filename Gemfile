@@ -14,6 +14,10 @@ group :test, :development do
   gem 'sqlite3'
   gem 'heroku'
   gem 'autotest'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'spork'
+  gem 'guard-spork'
 end
 
 group :production do

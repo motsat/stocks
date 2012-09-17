@@ -6,8 +6,10 @@ width:100%;
 text-align:left;
 margin:0px;
 padding:0px;
+vertical-align:middle;
 }
 .right {
+vertical-align:middle;
 color:gray;
 float:right;
 text-align:right;
@@ -15,10 +17,14 @@ margin:0px;
 padding:0px;
 }
 .left {
+vertical-align:middle;
 font-size:16px;
 float:left;
 margin:0px;
 padding:0px;
+}
+.command_hover {
+  background: #f8dce0
 }
 // .c-all{
 // clear:both;

@@ -4,22 +4,36 @@
  お勉強
  http://dotinstall.com/lessons/basic_twitter_bootstrap_v2 
  -->
-<h3><%= @command_group.title %></h3>
-<%= link_to("edit",edit_command_group_url(@command_group)) %>
+
+<h2><%= @command_group.title %></h2>
+<%= icon(:time) {@command_group.created_at.to_s(:simple)}%>
+<%= link_to(button(:primary, :edit), edit_command_group_url(@command_group)) %>
+<%= link_to(button(:danger, :delete), delete_command_group_url(@command_group)) %>
+<%= space(50) %>
 <br/>
-
+Replace String
+<table>
 <% @command_group.command_replaces.each do |command_replace| %>
-  <span style='color:blue'><span name='from_content'><%= command_replace.from_content %></span>:<%= text_field_tag "", command_replace.to_content, 
-                                                                  :name=>'to_content',:id=>"command_replace_#{command_replace.id}", :onChange => "replace_contents();", :onKeyUP => "replace_contents();" %><br/></span>
+  <tr>
+    <td><span style='color:blue'><span name='from_content'><%= command_replace.from_content %></span></td>
+    <td><%= text_field_tag "", command_replace.to_content, 
+                                                                  :name=>'to_content',:id=>"command_replace_#{command_replace.id}", :onChange => "replace_contents();", :onKeyUP => "replace_contents();" %><br/></span></td>
+  </tr>
 <% end %>
-
+</table>
 <br/>
 <div style='text-align:right'>
- <a><i class='icon-edit icon-white'></i>all copy</a>
+ <%= icon_link_to(:edit, '#', :id => :copy_all_content) do %>
+  Copy All Command (&&)
+ <% end %>
 </div>
+<!-- コマンド全文用 -->
+<%= content_tag(:span, "all_content", :style=>'display:none', :id => :all_content ) -%>
+
+<!-- コマンド一覧 -->
 <pre style="font-size:15px; font-family: 'Andale Mono', monospace">
 <% @command_group.commands.each do |command| -%>
-  <%= content_tag(:span,  command.content, :name => :commands, :class => :command_class, :id => "command_#{command.id}") -%> <%= copy_icon %>
+  <%= icon(:copy) %> <%= content_tag(:span,  command.content, :name => :commands, :class => :command_class, :id => "command_#{command.id}") -%><br/>
 <% end %>
 </pre>
 <div style='display:none'>
@@ -40,6 +54,7 @@
     // # 全ての文字変換を反映
     // # hidden_command_-オリジナルのcommand
     // # from_contentからto_contentへの変換を全体にかける
+    all_content = ''
     $.each(original_commands, function(org_idx, org_elem) {
         content = $(org_elem).html()
         $.each(from_contents, function(from_idx, from_elem) {
@@ -50,14 +65,17 @@
 
         command = $("*[name=commands]")[org_idx];
         $(command).text(content);
-        set_zclip(command);
+        all_content += content + ' && '
     })
+    $("#all_content").text(all_content.replace(/ && $/,''))
+    set_zclips()
   }
-  function set_zclip(element)
+
+  function set_zclip(element, copy_text)
   {
       $(element).zclip({
         path:'/swf/ZeroClipboard.swf',
-        copy:$(element).text(),
+        copy:copy_text ?  copy_text : $(element).text(),
         beforeCopy:function(){
           $(element).css('background','white');
           $(element).css('color','lightgray');
@@ -68,11 +86,21 @@
         }
       });
   }
-  $(document).ready(function(){
-    replace_contents()
+  function set_zclips()
+  {
     $(".command_class").each(function(){
       set_zclip(this);
     });
- });
+    set_zclip($("#copy_all_content"), $("#all_content").text());
+  }
+
+  $(document).ready(function(){
+    replace_contents()
+    $("*[name=commands]").hover(
+      function(){$(this).addClass('command_hover')},
+      function(){$(this).removeClass('command_hover')}
+    );
+  });
+
 </script>
 <% end -%>

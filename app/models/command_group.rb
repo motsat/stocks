@@ -5,6 +5,10 @@ class CommandGroup < ActiveRecord::Base
   belongs_to :user
   accepts_nested_attributes_for :command_replaces
 
+  def self.by_title_or_summary(keyword)
+    []
+  end
+
   def set_command_summary
     self.command_summary = self.commands.pluck(:content).join('  ')
   end

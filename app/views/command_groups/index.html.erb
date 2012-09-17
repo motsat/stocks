@@ -2,13 +2,16 @@
   <div class="box">
     <div class="left"><%= link_to command_group.title, command_group %></div>
     <div class="right">
-      <%= icon_link_to :edit,  edit_command_group_url(command_group) %>
-      <%= icon_link_to :trash, delete_command_group_url(command_group) %>
+
       <%= icon(:time) {command_group.created_at.to_s(:simple)}%>
+      <%= link_to(button(:info, :show), command_group_url(command_group)) %>
+      <%= link_to(button(:primary, :edit), edit_command_group_url(command_group)) %>
+      <%= link_to(button(:danger, :delete), delete_command_group_url(command_group)) %>
     </div>
   </div>
-  <br/>
+  <%= space(25) %>
   <pre>
   <%= command_group.command_summary -%>
   </pre>
+  <%= space(10) %>
 <% end %>
