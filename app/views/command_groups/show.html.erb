@@ -64,7 +64,7 @@ Replace String
         });
 
         command = $("*[name=commands]")[org_idx];
-        $(command).text(content);
+        $(command).html(content);
         all_content += content + ' && '
     })
     $("#all_content").text(all_content.replace(/ && $/,''))

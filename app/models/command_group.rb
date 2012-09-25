@@ -6,7 +6,7 @@ class CommandGroup < ActiveRecord::Base
   accepts_nested_attributes_for :command_replaces
 
   def self.by_title_or_summary(keyword)
-    []
+    CommandGroup.where("title LIKE '%#{keyword}%' OR command_summary LIKE '%#{keyword}%'")
   end
 
   def set_command_summary
