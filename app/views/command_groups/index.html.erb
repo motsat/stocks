@@ -11,7 +11,7 @@
   </div>
   <%= space(25) %>
   <pre>
-  <%= command_group.command_summary -%>
+  <%= truncate(command_group.command_summary,length: 100) -%>
   </pre>
   <%= space(10) %>
 <% end %>

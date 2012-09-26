@@ -4,6 +4,7 @@
  お勉強
  http://dotinstall.com/lessons/basic_twitter_bootstrap_v2 
  -->
+<% content_for(:title) {@command_group.title} %>
 
 <h2><%= @command_group.title %></h2>
 <%= icon(:time) {@command_group.created_at.to_s(:simple)}%>
