@@ -1,5 +1,6 @@
 class CommandGroupsController < ApplicationController
   before_filter :find_command_group, only: [:show, :edit, :delete, :update]
+
   def index
     @command_groups = @current_user.command_groups
   end
