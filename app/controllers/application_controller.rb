@@ -4,4 +4,5 @@ class ApplicationController < ActionController::Base
   def load_user
     @current_user ||= current_user
   end
+
 end
