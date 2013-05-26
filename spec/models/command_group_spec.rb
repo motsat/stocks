@@ -2,8 +2,11 @@
 require 'spec_helper'
 #require 'factory_girl'
 describe CommandGroup do
-  it 'titleのみにヒットする検索でデータとれる事' do
+  it 'keyward検索でデータとれる事' do
     CommandGroup.delete_all
+    # command_summaryはbefore_saveでいじられるので回避す
+    CommandGroup.skip_callback(:save, :before, :set_command_summary
+)
     @command_groups = [FactoryGirl.create(:command_group1),
                        FactoryGirl.create(:command_group2),
                        FactoryGirl.create(:command_group3),
@@ -14,13 +17,4 @@ describe CommandGroup do
     CommandGroup.by_title_or_summary('サマリー').size.should eq 1
 
   end
-  #it 'summaryのみにヒットする検索でデータとれる事' do
-  #  pending
-  #end
-  #it 'title + summaryにヒットする検索でデータとれる事' do
-  #  pending
-  #end
-  #it 'titleにもsummaryにもヒットしない検索でデータとれない事' do
-  #  pending
-  #end
 end

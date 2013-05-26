@@ -7,7 +7,8 @@ FactoryGirl.define do
     command_summary 'サマリーとタイトル'
   end
   factory :command_group2, :class => CommandGroup do
-    title 
+    title 'どこからも取得されない'
+    command_summary 'どこからも取得されない'
   end
   factory :command_group3, :class => CommandGroup do
     title 'その他'
@@ -15,6 +16,6 @@ FactoryGirl.define do
   end
   factory :command_group4, :class => CommandGroup do
     title 'hoge'
-    command_summary 'その他'
+    command_summary 'hoge'
   end
 end
