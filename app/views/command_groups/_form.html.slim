@@ -1,0 +1,19 @@
+javascript:
+  function delete_command_replac(id)
+  {
+    console.log($("#command_replace_" + id).remove())
+  }
+
+= form_for(@command_group) do |f| 
+  = f.text_field :title
+  pre
+    = text_area_tag 'command[contents]', commands_for_textarea(@command_group.commands), cols:100, rows:4 , class:"field span6", placeholder:"input commands"
+  h3 = "Replaces"
+
+  - command_replace_idx = 0
+  div class='field' id="command_replaces"
+    = f.fields_for :command_replaces do |replace_f,idx|
+      = render 'command_replace_fields', :f => replace_f
+    = link_to_add_fields 'Add Replace Content', f, :command_replaces
+    br
+  = submit_tag '登録', :class => ''
