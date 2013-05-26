@@ -1,0 +1,103 @@
+- content_for(:title) {@command_group.title}
+
+h2 = @command_group.title
+
+= icon(:time) {@command_group.created_at.to_s(:simple)}
+= link_to(button(:primary, :edit),  edit_command_group_url(@command_group))
+= link_to(button(:danger, :delete), delete_command_group_url(@command_group))
+= space(50)
+
+br
+
+|Replace String
+
+table
+  - @command_group.command_replaces.each do |command_replace|
+    tr
+      td
+        span style="color:blue"
+          span name="from_content"
+            = command_replace.from_content
+      td
+        = text_field_tag "", command_replace.to_content, name:'to_content',
+          id: "command_replace_#{command_replace.id}", onChange: "replace_contents();", onKeyUP: "replace_contents();"
+        br
+
+br
+div style='text-align:right'
+  = icon_link_to(:edit, '#', id: :copy_all_content) do 
+    Copy All Command (&&)
+<!-- コマンド全文用 -->
+= content_tag(:span, "all_content", style:'display:none', id: :all_content )
+
+<!-- コマンド一覧 -->
+pre style="font-size:15px; font-family: 'Andale Mono', monospace"
+  - @command_group.commands.each do |command|
+    = icon(:copy)  
+    = content_tag(:span, command.content, name: :commands, class: :command_class, id: "command_#{command.id}")
+    br
+
+div style='display:none'
+  - @command_group.commands.each do |command|
+    = content_tag(:div, command.content, name: :original_commands, id: "original_command_#{command.id}")
+    br
+
+- content_for :after_application_js_load do
+  = javascript_include_tag "jquery.zclip"
+  javascript:
+    function replace_contents()
+    {
+      original_commands = $("*[name=original_commands]");
+      from_contents     = $("*[name=from_content]");
+      to_contents       = $("*[name=to_content]");
+
+      // # 全ての文字変換を反映
+      // # hidden_command_-オリジナルのcommand
+      // # from_contentからto_contentへの変換を全体にかける
+      all_content = ''
+      $.each(original_commands, function(org_idx, org_elem) {
+          content = $(org_elem).html()
+          $.each(from_contents, function(from_idx, from_elem) {
+            from_content = $(from_elem).html()
+            to_content   = $(to_contents[from_idx]).val()
+            content      = content.replace(from_content, to_content);
+          });
+
+          command = $("*[name=commands]")[org_idx];
+          $(command).html(content);
+          all_content += content + ' && '
+      })
+      $("#all_content").text(all_content.replace(/ && $/,''))
+      set_zclips()
+    }
+
+    function set_zclip(element, copy_text)
+    {
+        $(element).zclip({
+          path:'/swf/ZeroClipboard.swf',
+          copy:copy_text ?  copy_text : $(element).text(),
+          beforeCopy:function(){
+            $(element).css('background','white');
+            $(element).css('color','lightgray');
+          },
+          afterCopy:function(){
+            $(element).css('background','lightgrey');
+            $(element).css('color','darkgray');
+          }
+        });
+    }
+    function set_zclips()
+    {
+      $(".command_class").each(function(){
+        set_zclip(this);
+      });
+      set_zclip($("#copy_all_content"), $("#all_content").text());
+    }
+
+    $(document).ready(function(){
+      replace_contents()
+      $("*[name=commands]").hover(
+        function(){$(this).addClass('command_hover')},
+        function(){$(this).removeClass('command_hover')}
+      );
+    });
