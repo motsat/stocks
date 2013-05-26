@@ -1,0 +1,13 @@
+- @command_groups.each do |command_group| 
+  div class="box"
+    div class="left"
+      = link_to command_group.title, command_group
+    div class="right"
+      = icon(:time) {command_group.created_at.to_s(:simple)}
+      = link_to(button(:info, :show), command_group_url(command_group))
+      = link_to(button(:primary, :edit), edit_command_group_url(command_group))
+      = link_to(button(:danger, :delete), delete_command_group_url(command_group))
+  = space(25)
+  pre
+    = truncate(command_group.command_summary,length: 100)
+  = space(10)
